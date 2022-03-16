@@ -1,0 +1,65 @@
+<?php
+
+$pdoconnect = new PDO( 'mysql:host=localhost;dbname=ecode2022;charset=UTF8','root');
+$pdoconnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$req = "SELECT `id`, `name`, `poids` FROM `roles` ORDER BY `poids` DESC";
+    $stm = $pdoconnect->prepare($req);
+    $stm->execute();
+
+    $bdd_roles = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+    //var_dump($bdd_roles);
+
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>liste des rôles</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+    <link rel="stylesheet" href="styleRoles.css">
+</head>
+<body>
+    <header>
+        <div class="brand-logo">
+            <a href="#"><img src="https://www.markuptag.com/images/white-logo-icon.png" alt="Brand Logo"></a>
+        </div>
+
+        <input type="checkbox" id="toggle-btn">
+        <label for="toggle-btn" class="show-menu-btn"><i class="fas fa-bars"></i></label>
+
+        <nav>
+            <ul class="navigation">
+                <li><a href="index.html"><i class="fas fa-house-damage"></i> accueil principal</a></li>
+                <li><a href="read.html"><i class="fas fa-house-damage"></i> Liste role</a></li>
+                <li><a href="create.html"><i class="far fa-image"></i> Nouvel utilisateur</a></li>
+                <li><a href="newVax.html"><i class="fab fa-blogger-b"></i> Nouveau vaccin</a></li>
+                <label for="toggle-btn" class="hide-menu-btn"><i class="fas fa-times"></i></label>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <?php foreach($bdd_roles as $role){ ?>
+        <div class="lineRole">
+            <div>rôle</div>
+                <?php echo $role['name'] ?>
+            <div>poids</div>
+                <?php echo $role['poids'] ?>
+            <div>
+                <a href="update.html?idrole=<?php echo $role['id'] ?>">Modifier</a>
+                <a href="delete.html?idrole=<?php echo $role['id'] ?>">Supprimer</a>
+            </div>
+            <br>
+            <br>
+            <?php } ?>
+        </div>
+    </div>
+
+</body>
+</html>

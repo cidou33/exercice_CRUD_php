@@ -1,0 +1,99 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color:orangered;
+}
+
+.bloc{
+
+
+    margin: 20px;
+}
+#colorRed{
+    color: red !important;
+}
+#bloc{
+    margin: 20px;
+    flex-wrap: wrap;
+    display: flex;
+    justify-content:center;
+}
+
+.img{
+    width:250px;
+}
+
+.filterImg{
+    filter: invert(65%);
+}
+#space{
+    background-color:rgb(231, 129, 129);
+    margin:5px;
+    height: 20px;
+}
+
+.test{
+    margin:50px;
+}
+
+.bgPos{
+    color:rgb(4, 214, 4)!important;
+}
+
+.bgNeg{
+    color:red!important;
+
+}
+
+
+
+ li:hover{
+    background-color: yellow!important;
+}
+
+label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input,
+label {
+    margin: .4rem 0;
+}
+
+.formInput{
+    width:400px;
+}
+
+.ulNavBar{
+    list-style: none;
+    display: flex;
+
+}
+
+.ulNavBar > li{
+    background-color:transparent !important;
+    margin: 20px 0 0 30px;
+}
+
+.backHome{
+    width:100vw;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 50px;
+}
+
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #6a11cb;
+  
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+  
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+  }

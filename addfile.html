@@ -1,0 +1,117 @@
+<?php
+require_once('common/acl.php');
+var_dump($_SERVER['SCRIPT_NAME']);
+/**
+ * - Si validation du formulaire
+ * - Récuperer le fichier dans $_FILES
+ * - Le déplacer dans notre dossier
+ *      - du temporaire vers le final
+ */
+
+$pdoConnect= new PDO( 'mysql:host=localhost;dbname=ecode2022;charset=UTF8','root');
+$pdoConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$sql="SELECT id, firstName, lastName, mail from users";
+$stm= $pdoConnect->prepare($sql);
+$stm->execute();
+$listUsers= $stm->fetchAll(PDO::FETCH_ASSOC);
+//var_dump($_POST['identity_user']);
+if (count($_POST)>0){
+    
+if (count($_FILES) > 0) {
+    $sqlPhoto="UPDATE `users` SET `image`=:image WHERE `id`=:sql_param_id";
+    $stmPhoto= $pdoConnect->prepare($sqlPhoto);
+    $stmPhoto->execute([
+        'image' => $_FILES['image']['name'],
+        'sql_param_id'=> $_POST['identity_user']
+    ]);
+    if($listUsers != false && !is_dir('public/img/'.$_POST['identity_user'])){
+        mkdir('public/img/'.$_POST['identity_user']);
+    };
+    move_uploaded_file($_FILES['image']['tmp_name'], 'public/img/'.$_POST['identity_user'].'/'.$_FILES['image']['name']);
+    /**
+     * $_FILES contient les informations des input de type file
+     * le premier index : le name de l'input
+     * le deuxieme index name : nom du fichier
+     */
+    $nomFichier = $_FILES['image']['name'];
+    $dossierDepart = $_FILES['image']['tmp_name'];
+
+    //definir rep de destination + nom du fichier
+    $dossierDest = 'addfile/files/' . $nomFichier;
+
+    move_uploaded_file($dossierDepart, $dossierDest);
+    
+}
+}
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="styleRoles.css">
+    <title>Add file</title>
+</head>
+
+<body>
+<header>
+        <div class="brand-logo">
+            <a href="#"><img src="https://www.markuptag.com/images/white-logo-icon.png" alt="Brand Logo"></a>
+        </div>
+
+        <input type="checkbox" id="toggle-btn">
+        <label for="toggle-btn" class="show-menu-btn"><i class="fas fa-bars"></i></label>
+
+        <nav>
+            <ul class="navigation">
+                <li><a href="index.html"><i class="fas fa-house-damage"></i> accueil principal</a></li>
+                <li><a href="read.html"><i class="fas fa-house-damage"></i> Liste role</a></li>
+                <li><a href="create.html"><i class="far fa-image"></i> Nouvel utilisateur</a></li>
+                <li><a href="newVax.html"><i class="fab fa-blogger-b"></i> Nouveau vaccin</a></li>
+                <label for="toggle-btn" class="hide-menu-btn"><i class="fas fa-times"></i></label>
+            </ul>
+        </nav>
+    </header>
+
+    
+
+    <div class="container">
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="image" class="form-label">Ajouter un fichier</label>
+                <input class="form-control" type="file" name="image" id="image">
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-3">Valider</button>
+            <select class="form-select" aria-label="Default select example" name="identity_user">
+  <option selected>selectionner utilisateur</option>
+  <?php foreach ($listUsers as $userIdentity){?>
+  <option value="<?php echo $userIdentity['id']; ?>"><?php  echo $userIdentity['mail']; ?></option>
+  <?php  } ?>
+</select>
+        </form>
+        <?php
+        //récupérer les fichiers du dossier files
+        $files = scandir('addfile/files');
+        
+        foreach ($files as $value) :
+            if ($value != '.' && $value != '..') :
+        ?>
+                <a href="files/<?php echo $value; ?>"><?php echo $value ?></a><br>
+        <?php
+            endif;
+        endforeach; ?>
+    </div>
+    
+
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</html>

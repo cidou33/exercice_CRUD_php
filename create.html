@@ -1,0 +1,64 @@
+<?php
+if(count($_POST)>0){
+
+    $pdoconnect = new PDO( 'mysql:host=localhost;dbname=ecode2022;charset=UTF8','root');
+    $pdoconnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    
+    $req = "INSERT INTO `roles` (`name`, `poids`) VALUES (:sql_param_name, :sql_param_poids)";
+    $stm = $pdoconnect->prepare($req);
+    $stm->execute([
+        'sql_param_name' => $_POST['input_name'],
+        'sql_param_poids' => $_POST['input_poids']
+    ]);
+
+    header('location:read.html');
+}
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How To create Responsive Navbar with HTML CSS without Bootstrap</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+    <link rel="stylesheet" href="styleRoles.css">
+</head>
+<body>
+    <header>
+        <div class="brand-logo">
+            <a href="#"><img src="https://www.markuptag.com/images/white-logo-icon.png" alt="Brand Logo"></a>
+        </div>
+
+        <input type="checkbox" id="toggle-btn">
+        <label for="toggle-btn" class="show-menu-btn"><i class="fas fa-bars"></i></label>
+
+        <nav>
+            <ul class="navigation">
+                <li><a href="index.html"><i class="fas fa-house-damage"></i> accueil principal</a></li>
+                <li><a href="read.html"><i class="fas fa-house-damage"></i> Liste role</a></li>
+                <li><a href="create.html"><i class="far fa-image"></i> Nouvel utilisateur</a></li>
+                <li><a href="newVax.html"><i class="fab fa-blogger-b"></i> Nouveau vaccin</a></li>
+                <label for="toggle-btn" class="hide-menu-btn"><i class="fas fa-times"></i></label>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <form action="" method="post">
+            <div>
+                <label for="input_name">Nom du rôle</label>
+                <input type="text" value="" id="input_name" name="input_name" placeholder="Nom du rôle">               
+            </div>
+            <div>
+                <label for="input_name">Poids</label>
+                <input type="text" value="" id="poids" name="input_poids" placeholder="Poids">               
+            </div>
+            <button type="submit">Valider</button>
+        </form>
+        
+    </main>
+</body>
+</html>

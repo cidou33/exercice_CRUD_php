@@ -1,0 +1,18 @@
+
+<?php
+
+//Initialiser notre connexion avec la BDD
+$sqlQuery = new PDO('mysql:host=localhost;dbname=ecod2022;charset=UTF8','root');
+
+//Ajouter des options pour avec les erreurs
+$sqlQuery->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+//Définir notre req
+$sql = "SELECT id, firstname, lastname, birth, isInfected FROM users";
+
+//Préparer notre req
+$stm = $sqlQuery->prepare($sql);
+
+//executer notre req
+$stm->execute();var_dump($stm->fetchAll(PDO::FETCH_ASSOC));?>
+

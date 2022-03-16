@@ -1,0 +1,92 @@
+
+<?php
+
+
+require_once('modifyHandler.php');
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+    integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+    crossorigin="anonymous"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <nav class="navBar" id="nav">
+    <ul class="ulNavBar">
+        <li><a href="register1.html"><input class="btn btn-primary" type="button" value="register"></a></li>
+        <?php if(isset($_SESSION['user'])){ ?>
+        <li><a href="modify.html<?php echo "?id=".$_SESSION['user']['id'] ?>"><input class="btn btn-primary" type="button" value="modify"></a></li>
+            <li><a href="logout.php"><input class="btn btn-primary" type="button" value="Logout"></a></li>
+            <li><a href="newVax.html"><input class="btn btn-primary" type="button" value="Nouveau vaccin"></a></li>
+            <li><a href="addfile.html"><input class="btn btn-primary" type="button" value="changer avatar"></a></li>
+        <?php } else { ?>
+            <li><a href="login.html"><input class="btn btn-primary" type="button" name="login" value="Login"></a></li>
+
+        <?php } ?>
+    </ul>
+</nav>
+  <form action="" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Email address</label>
+      <input type="email" name="mail" class="form-control formInput" value="<?php echo $iduser['mail'] ?>" id="exampleFormControlInput1" placeholder="name@example.com">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Nom</span>
+      <input type="text" name="lastname" class="formInput" value="<?php echo $iduser['lastName'] ?>" aria-label="Sizing example input"
+        aria-describedby="inputGroup-sizing-sm">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Prénom</span>
+      <input type="text" name="firstname" value="<?php echo $iduser['firstName'] ?>" class="formInput" aria-label="Sizing example input"
+        aria-describedby="inputGroup-sizing-sm">
+    </div>
+
+    <label for="start">Start date:</label>
+
+    <input type="date" id="start" name="birth" value="<?php echo $iduser['birth'] ?>" min="2018-01-01" max="2018-12-31">
+
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" name="password" class="form-control formInput" id="exampleInputPassword1" placeholder="Password">
+    </div>
+
+    <div class="form-check"></div>
+      <label for="avatar">Choisissez une photo</label>
+      
+      <input type="file" id="image" name="image">
+    </div>
+
+
+
+    <div class="form-check">
+      <!-- si ce qu'il y a avant le ? est true, ca ecris checkde, sinon ca ecrit ce qu'il y a apres le :  -->
+      <input class="form-check-input" name="infectStat" type="checkbox" <?php echo $iduser['is_infected']? 'checked':'' ?> id="flexCheckDefault">
+      <label class="form-check-label" for="flexCheckDefault">
+        infecté
+      </label>
+    </div>
+    <div class="form-check">
+      <!-- si ce qu'il y a avant le ? est true, ca ecris checkde, sinon ca ecrit ce qu'il y a apres le :  -->
+      <input class="form-check-input" name="statusProfil" type="checkbox" <?php echo $iduser['is_public']? 'checked':'' ?> id="flexCheckDefault">
+      <label class="form-check-label" for="flexCheckDefault">
+        cochez pour avoir un profil publique
+      </label>
+    </div>
+
+
+    <input class="btn btn-primary" type="submit" value="Submit">
+  </form>
+  <a href="index.html" class="backHome"><input class="btn btn-primary" type="button" value="Home page"></a>
+</html>
+

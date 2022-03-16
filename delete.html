@@ -1,0 +1,73 @@
+<?php
+
+$pdoconnect = new PDO( 'mysql:host=localhost;dbname=ecode2022;charset=UTF8','root');
+$pdoconnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+if(count($_POST) > 0){
+    $req_delete= "DELETE FROM `roles` WHERE `id` = :sql_param_id";
+    $delete_stm= $pdoconnect->prepare($req_delete);
+    $delete_stm->execute([
+        'sql_param_id' => $_GET['idrole']
+    ]);
+    header('location:read.html');
+    
+};
+$req = "SELECT `id`, `name`, `poids` FROM `roles` WHERE `id` = :sql_param_id";
+        $stm = $pdoconnect->prepare($req);
+        $stm->execute([
+            'sql_param_id' => $_GET['idrole']
+        ]);
+
+        $bdd_roles = $stm->fetch(PDO::FETCH_ASSOC);
+
+       // var_dump($bdd_roles);
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>liste des rôles</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+    <link rel="stylesheet" href="styleRoles.css">
+</head>
+<body>
+    <header>
+        <div class="brand-logo">
+            <a href="#"><img src="https://www.markuptag.com/images/white-logo-icon.png" alt="Brand Logo"></a>
+        </div>
+
+        <input type="checkbox" id="toggle-btn">
+        <label for="toggle-btn" class="show-menu-btn"><i class="fas fa-bars"></i></label>
+
+        <nav>
+            <ul class="navigation">
+                <li><a href="index.html"><i class="fas fa-house-damage"></i> accueil principal</a></li>
+                <li><a href="read.html"><i class="fas fa-house-damage"></i> Liste role</a></li>
+                <li><a href="create.html"><i class="far fa-image"></i> Nouvel utilisateur</a></li>
+                <li><a href="newVax.html"><i class="fab fa-blogger-b"></i> Nouveau vaccin</a></li>
+                <label for="toggle-btn" class="hide-menu-btn"><i class="fas fa-times"></i></label>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form action="" method="post">
+            <div>
+                <label for="input_name">Nom du rôle</label>
+                <input type="text" value="<?php echo $bdd_roles['name'] ?>" id="input_name" name="input_name" placeholder="Nom du rôle">               
+            </div>
+            <div>
+                <label for="input_name">Poids</label>
+                <input type="text" value="<?php echo $bdd_roles['poids'] ?>" id="poids" name="input_poids" placeholder="Poids">               
+            </div>
+            <button type="submit">Supprimer</button>
+        </form>
+        
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<?php
+session_start();
+if(count($_POST)>0){
+
+    $pdoconnect = new PDO( 'mysql:host=localhost;dbname=ecode2022;charset=UTF8','root');
+    $pdoconnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    
+    $req = "INSERT INTO `vaccines` (`name`, `date`, `id_user`) VALUES (:sql_param_name, :sql_param_date, :sql_param_iduser)";
+    $stm = $pdoconnect->prepare($req);
+    $stm->execute([
+        'sql_param_date' => $_POST['input_dateVax'],
+        'sql_param_name' => $_POST['input_nameVax'],
+        'sql_param_iduser' => $_SESSION['user']['id'],
+    ]);
+
+    //header('location:read.html');
+}
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How To create Responsive Navbar with HTML CSS without Bootstrap</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+    <link rel="stylesheet" href="styleRoles.css">
+</head>
+<body>
+    <header>
+        <div class="brand-logo">
+            <a href="#"><img src="https://www.markuptag.com/images/white-logo-icon.png" alt="Brand Logo"></a>
+        </div>
+
+        <input type="checkbox" id="toggle-btn">
+        <label for="toggle-btn" class="show-menu-btn"><i class="fas fa-bars"></i></label>
+
+        <nav>
+            <ul class="navigation">
+                <li><a href="index.html"><i class="fas fa-house-damage"></i> accueil principal</a></li>
+                <li><a href="read.html"><i class="fas fa-house-damage"></i> Liste role</a></li>
+                <li><a href="create.html"><i class="far fa-image"></i> Nouvel utilisateur</a></li>
+                <li><a href="newVax.html"><i class="fab fa-blogger-b"></i> Nouveau vaccin</a></li>
+                <label for="toggle-btn" class="hide-menu-btn"><i class="fas fa-times"></i></label>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <form action="" method="post">
+            <div>
+                <label for="input_nameVax">Nom du vaccin</label>
+                <input type="text" value="" id="input_nameVax" name="input_nameVax" placeholder="Nom du vaccin">               
+            </div>
+            <div>
+                <label for="input_dateVax">date du vaccin</label>
+                <input type="date" id="input_dateVax" name="input_dateVax" value="2022-07-22" min="2015-01-01" max="2022-12-31">
+            </div>php
+
+            <button type="submit">Valider</button>
+        </form>
+        
+    </main>
+</body>
+</html>
